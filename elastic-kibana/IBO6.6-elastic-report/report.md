@@ -32,7 +32,7 @@ author:
 
 *for example here a first line*
 
-- Once have our fixed JSON file containing all the data in a way that can be given to Elastic Search, we do so with 
+- Once have our fixed JSON file containing all the data in a way that can be given to Elastic Search, we do so with:
 
 ```
 curl -XPUT localhost:9200/_bulk -H"Content-Type: application/json" \
@@ -68,6 +68,69 @@ GET restaurants/_search {
       "must_not" : {
         "match" : {
           "fields.cuisine":"Pizza"}}}}}
+```
+
+**All restaurants where cuisine type is Bakery**
+
+```sh
+GET restaurants/_search {
+  "query":{
+    "match_phrase": {
+      "fields.cuisine":"Bakery"}}}
+```
+
+**Restaurant data knowing its name**
+
+```sh
+GET restaurants/_search {
+  "query": {   
+    "match_phrase": {       
+      "fields.name":"Phillip Morris International"}}}
+```
+
+**All Bronks restaurants**
+
+```sh
+POST restaurants/_search
+{
+  "query": {
+    "query_string": {
+      "query": "Bronx",
+        "fields": ["fields.borough"]}}}
+```
+
+**Restaurant data knowing its id**
+
+```sh
+POST restaurants/_search {
+  "query": {
+    "query_string": {
+        "query":"30075445",
+            "fields": ["fields.restaurant_id"]}}}
+```
+
+**delete restaurant by ID**
+
+```sh
+POST restaurants/_delete_by_query {
+  "query": {
+    "query_string": {
+      "query":"30075445",
+      "fields": ["fields.restaurant_id"]}}}
+```
+
+**Insert of new data**
+
+```sh
+PUT restaurants/restaurant/25358
+  {"address": {"building": "666","coord":{"type":"Point",
+  "coordinates" : [-73.97992870000002, 40.7833573]},
+  "street": "Broadway", "zipcode": "10024"},
+  "borough": "Manhattan",
+  "cuisine": "Caf\u00e9/Coffee/Tea",
+  "grades": [{"date": {"$date": 1399939200000}, "grade": "A", "score": 7}],
+  "name": "Chez Kibana",
+  "restaurant_id": "30079564"}
 ```
 
 ---
