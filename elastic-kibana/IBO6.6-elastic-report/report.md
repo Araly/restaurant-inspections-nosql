@@ -12,7 +12,7 @@ author:
 
 # Datamodel and Import
 
-- As for the work done on Cassandra, we decided to edit every line of the JSON data to make each its own individual insert.
+- As for the work done on Cassandra, we decided to edit every line of the JSON data to make each its own individual insert, with a script written in Common Lisp, found in the resources folder.
 
 ```json
 {"index":{"_index": "restaurants","_type":"restaurant","_id":1}}
